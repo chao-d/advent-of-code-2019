@@ -1,11 +1,21 @@
+TARGET = 19690720
+
 nums = []
 with open("./day2p1input") as f:
     for line in f:
         nums = [int(num) for num in line.split(",")]
 
-def preprocess(nums):
-    nums[1] = 12
-    nums[2] = 2
+curr = nums[:]
+def run(nums):
+    for i in range(100):
+        for j in range(100):
+            nums = curr[:]
+            nums[1], nums[2] = i, j
+            print(calc(nums))
+            if calc(nums) == TARGET:
+                print(i, j)
+                print("result = " + str(100 * i + j))
+                return
 
 def calc(nums):
     length = len(nums)
@@ -21,6 +31,6 @@ def calc(nums):
 
     return nums[0]
 
+
 if __name__ == "__main__":
-    preprocess(nums)
-    print(calc(nums))
+    run(nums)
