@@ -6,6 +6,8 @@ with open("./day2p1input") as f:
         nums = [int(num) for num in line.split(",")]
 
 curr = nums[:]
+
+
 def run(nums):
     for i in range(100):
         for j in range(100):
@@ -16,6 +18,7 @@ def run(nums):
                 print(i, j)
                 print("result = " + str(100 * i + j))
                 return
+
 
 def calc(nums):
     length = len(nums)
