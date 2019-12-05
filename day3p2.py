@@ -38,21 +38,26 @@ def mark_path(grid, currx, curry, delta_x, delta_y, is_second, curr_len):
         for i in range(1, abs(delta_y) + 1):
             curr_len[0] += 1
             if is_second:
-                if grid[currx + sign * i][curry][2] == 0:
-                    grid[currx + sign * i][curry][2] = curr_len[0]
+                if grid[currx + sign * i][curry] & 0x000000ffffff0000 == 0:
+                    grid[currx + sign * i][curry] &= 0xffffff000000ffff
+                    grid[currx + sign * i][curry] |= (curr_len[0] << 16)
             else:
-                if grid[currx + sign * i][curry][1] == 0:
-                    grid[currx + sign * i][curry][1] = curr_len[0]
+                if grid[currx + sign * i][curry] & 0xffffff0000000000 == 0:
+                    grid[currx + sign * i][curry] &= 0x000000ffffffffff
+                    grid[currx + sign * i][curry] = (curr_len[0] << 40)
 
             if not is_second:
-                grid[currx + sign * i][curry][0] = 1
-            elif (grid[currx + sign * i][curry][0] == 1 or
-                  grid[currx + sign * i][curry][0] == 3):
-                grid[currx + sign * i][curry][0] = 3
+                grid[currx + sign * i][curry] &= 0xffffffffffff0000
+                grid[currx + sign * i][curry] |= 0x1
+            elif (grid[currx + sign * i][curry] & 0xffff == 1 or
+                  grid[currx + sign * i][curry] & 0xffff == 3):
+                grid[currx + sign * i][curry] &= 0xffffffffffff0000
+                grid[currx + sign * i][curry] |= 0x3
             else:
-                grid[currx + sign * i][curry][0] = 2
+                grid[currx + sign * i][curry] &= 0xffffffffffff0000
+                grid[currx + sign * i][curry] |= 0x2
 
-            if is_second and grid[currx + sign * i][curry][0] == 3:
+            if is_second and grid[currx + sign * i][curry] & 0xffff == 3:
                 interx.append((currx + sign * i, curry))
         return currx + delta_y, curry
     elif delta_y == 0:
@@ -60,21 +65,26 @@ def mark_path(grid, currx, curry, delta_x, delta_y, is_second, curr_len):
         for i in range(1, abs(delta_x) + 1):
             curr_len[0] += 1
             if is_second:
-                if grid[currx][curry + sign * i][2] == 0:
-                    grid[currx][curry + sign * i][2] = curr_len[0]
+                if grid[currx][curry + sign * i] & 0x000000ffffff0000 == 0:
+                    grid[currx][curry + sign * i] &= 0xffffff000000ffff
+                    grid[currx][curry + sign * i] |= (curr_len[0] << 16)
             else:
-                if grid[currx][curry + sign * i][1] == 0:
-                    grid[currx][curry + sign * i][1] = curr_len[0]
+                if grid[currx][curry + sign * i] & 0xffffff0000000000 == 0:
+                    grid[currx][curry + sign * i] &= 0x000000ffffffffff
+                    grid[currx][curry + sign * i] = (curr_len[0] << 40)
 
             if not is_second:
-                grid[currx][curry + sign * i][0] = 1
-            elif (grid[currx][curry + sign * i][0] == 1 or
-                  grid[currx][curry + sign * i][0] == 3):
-                grid[currx][curry + sign * i][0] = 3
+                grid[currx][curry + sign * i] &= 0xffffffffffff0000
+                grid[currx][curry + sign * i] |= 0x1
+            elif (grid[currx][curry + sign * i] & 0xffff == 1 or
+                  grid[currx][curry + sign * i] & 0xffff == 3):
+                grid[currx][curry + sign * i] &= 0xffffffffffff0000
+                grid[currx][curry + sign * i] |= 0x3
             else:
-                grid[currx][curry + sign * i][0] = 2
+                grid[currx][curry + sign * i] &= 0xffffffffffff0000
+                grid[currx][curry + sign * i] |= 0x2
 
-            if is_second and grid[currx][curry + sign * i][0] == 3:
+            if is_second and grid[currx][curry + sign * i] & 0xffff == 3:
                 interx.append((currx, curry + sign * i))
         return currx, curry + delta_x
 
@@ -112,8 +122,9 @@ def get_max(first, second):
 def fewest_steps(grid):
     steps = 2 ** 31 - 1
     for x, y in interx:
-        if grid[x][y][0] == 3:
-            curr = grid[x][y][1] + grid[x][y][2]
+        if grid[x][y] & 0xffff == 3:
+            curr = ((grid[x][y] & 0xffffff0000) >> 16 & 0xffffff) + \
+                    ((grid[x][y] & 0xffffff0000000000) >> 40 & 0xffffff)
             if curr < steps:
                 steps = curr
 
@@ -123,7 +134,7 @@ def fewest_steps(grid):
 if __name__ == "__main__":
     first, second = convert_to_list()
     max_row, max_col = get_max(first, second)
-    grid = [[[0, 0, 0] for _ in range(2 * max_col + 2)]
+    grid = [[0 for _ in range(2 * max_col + 2)]
             for _ in range(2 * max_row + 2)]
 
     print("start first")
