@@ -1,5 +1,5 @@
-FILENAME = "./day3p1input"
-# FILENAME = "./fakeinput"
+# FILENAME = "./day3p1input"
+FILENAME = "./fakeinput"
 
 
 def convert_to_list():
@@ -11,7 +11,7 @@ def convert_to_list():
         return firstline, secondline
 
 
-def draw_line(line, grid, x, y, is_second):
+def draw_line(line, x, y, is_second):
     currx, curry = x, y
     for d, num in line:
         if d == "U":
@@ -33,7 +33,8 @@ def mark_path(currx, curry, delta_x, delta_y, is_second):
         for i in range(1, abs(delta_y) + 1):
             if not is_second:
                 grid[currx + sign * i][curry] = 1
-            elif grid[currx + sign * i][curry] == 1 or grid[currx + sign * i][curry] == 3:
+            elif grid[currx + sign * i][curry] == 1 or \
+                    grid[currx + sign * i][curry] == 3:
                 grid[currx + sign * i][curry] = 3
             else:
                 grid[currx + sign * i][curry] = 2
@@ -46,7 +47,8 @@ def mark_path(currx, curry, delta_x, delta_y, is_second):
         for i in range(1, abs(delta_x) + 1):
             if not is_second:
                 grid[currx][curry + sign * i] = 1
-            elif grid[currx][curry + sign * i] == 1 and grid[currx][curry + sign * i] == 3:
+            elif grid[currx][curry + sign * i] == 1 and \
+                    grid[currx][curry + sign * i] == 3:
                 grid[currx][curry + sign * i] = 3
             else:
                 grid[currx][curry + sign * i] = 2
@@ -103,8 +105,8 @@ if __name__ == "__main__":
     grid = [[0 for _ in range(2 * max_col + 2)] for _ in range(2 * max_row +
             2)]
 
-    draw_line(first, grid, max_row, max_col, False)
-    draw_line(second, grid, max_row, max_col, True)
+    draw_line(first, max_row, max_col, False)
+    draw_line(second, max_row, max_col, True)
     print("YOYOYOYOYOYOYOYOYO")
     print(interx)
     print(min_dist(max_row, max_col))

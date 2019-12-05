@@ -1,5 +1,5 @@
-FILENAME = "./day3p1input"
-# FILENAME = "./fakeinput"
+# FILENAME = "./day3p1input"
+FILENAME = "./fakeinput"
 
 
 def convert_to_list():
@@ -11,28 +11,28 @@ def convert_to_list():
         return firstline, secondline
 
 
-def draw_line(line, grid, x, y, is_second):
+def draw_line(line, x, y, is_second):
     currx, curry = x, y
     curr_len = [0]
     for d, num in line:
         if d == "U":
-            currx, curry = mark_path(grid, currx, curry, 0, -num, is_second,
+            currx, curry = mark_path(currx, curry, 0, -num, is_second,
                                      curr_len)
         if d == "D":
-            currx, curry = mark_path(grid, currx, curry, 0, num, is_second,
+            currx, curry = mark_path(currx, curry, 0, num, is_second,
                                      curr_len)
         if d == "R":
-            currx, curry = mark_path(grid, currx, curry, num, 0, is_second,
+            currx, curry = mark_path(currx, curry, num, 0, is_second,
                                      curr_len)
         if d == "L":
-            currx, curry = mark_path(grid, currx, curry, -num, 0, is_second,
+            currx, curry = mark_path(currx, curry, -num, 0, is_second,
                                      curr_len)
 
 
 interx = []
 
 
-def mark_path(grid, currx, curry, delta_x, delta_y, is_second, curr_len):
+def mark_path(currx, curry, delta_x, delta_y, is_second, curr_len):
     if delta_x == 0:
         sign = delta_y // abs(delta_y)
         for i in range(1, abs(delta_y) + 1):
@@ -119,7 +119,7 @@ def get_max(first, second):
     return max(first_ver, sec_ver), max(first_hor, sec_hor)
 
 
-def fewest_steps(grid):
+def fewest_steps():
     steps = 2 ** 31 - 1
     for x, y in interx:
         if grid[x][y] & 0xffff == 3:
@@ -138,10 +138,10 @@ if __name__ == "__main__":
             for _ in range(2 * max_row + 2)]
 
     print("start first")
-    draw_line(first, grid, max_row, max_col, False)
+    draw_line(first, max_row, max_col, False)
     print("start second")
-    draw_line(second, grid, max_row, max_col, True)
+    draw_line(second, max_row, max_col, True)
     print("YOYO")
     print(interx)
     print("HIHI")
-    print(fewest_steps(grid))
+    print(fewest_steps())
