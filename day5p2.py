@@ -21,17 +21,7 @@ def calc(nums):
 
 
 def run_tests(nums, idx, paramodes, opcode):
-    if opcode < 3:
-        first_num = nums[nums[idx + 1]] \
-            if len(paramodes) < 1 or paramodes[0] == 0 else nums[idx + 1]
-        sec_num = nums[nums[idx + 2]] \
-            if len(paramodes) < 2 or paramodes[1] == 0 else nums[idx + 2]
-        if opcode == 1:
-            nums[nums[idx + 3]] = first_num + sec_num
-        else:
-            nums[nums[idx + 3]] = first_num * sec_num
-        return idx + 4
-    elif opcode < 5:
+    if opcode == 3 or opcode == 4:
         if opcode == 3:
             nums[nums[idx + 1]] = INPUT
         else:
@@ -39,37 +29,28 @@ def run_tests(nums, idx, paramodes, opcode):
                 if len(paramodes) < 1 or paramodes[0] == 0 else nums[idx + 1]
             print(val)
         return idx + 2
-    elif opcode < 7:
-        first_num = nums[nums[idx + 1]] \
-            if len(paramodes) < 1 or paramodes[0] == 0 else nums[idx + 1]
-        sec_num = nums[nums[idx + 2]] \
-            if len(paramodes) < 2 or paramodes[1] == 0 else nums[idx + 2]
-        if opcode == 5:
-            if first_num == 0:
-                return idx + 3
-            else:
-                return sec_num
-        else:
-            if first_num == 0:
-                return sec_num
-            else:
-                return idx + 3
     else:
         first_num = nums[nums[idx + 1]] \
             if len(paramodes) < 1 or paramodes[0] == 0 else nums[idx + 1]
         sec_num = nums[nums[idx + 2]] \
             if len(paramodes) < 2 or paramodes[1] == 0 else nums[idx + 2]
-        if opcode == 7:
-            if first_num < sec_num:
-                nums[nums[idx + 3]] = 1
+        if opcode < 3:
+            if opcode == 1:
+                nums[nums[idx + 3]] = first_num + sec_num
             else:
-                nums[nums[idx + 3]] = 0
+                nums[nums[idx + 3]] = first_num * sec_num
+            return idx + 4
+        elif opcode < 7:
+            if opcode == 5:
+                return idx + 3 if first_num == 0 else sec_num
+            else:
+                return idx + 3 if first_num != 0 else sec_num
         else:
-            if first_num == sec_num:
-                nums[nums[idx + 3]] = 1
+            if opcode == 7:
+                nums[nums[idx + 3]] = 1 if first_num < sec_num else 0
             else:
-                nums[nums[idx + 3]] = 0
-        return idx + 4
+                nums[nums[idx + 3]] = 1 if first_num == sec_num else 0
+            return idx + 4
 
 
 if __name__ == "__main__":
