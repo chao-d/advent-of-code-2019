@@ -1,10 +1,6 @@
-def foo():
-    a = 1
-    bar(a)
-    print(a)
+a = [1, 2, 3]
 
+for i in range(-1, -len(a) - 1, -1):
+    print(a[i])
 
-def bar(a):
-    a += 1
-
-foo()
+print(a[-2:])

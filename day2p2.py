@@ -1,14 +1,5 @@
-TARGET = 19690720
-
-nums = []
-with open("./day2p1input") as f:
-    for line in f:
-        nums = [int(num) for num in line.split(",")]
-
-curr = nums[:]
-
-
-def run(nums):
+def get_result(nums):
+    curr = nums[:]
     for i in range(100):
         for j in range(100):
             nums = curr[:]
@@ -36,4 +27,10 @@ def calc(nums):
 
 
 if __name__ == "__main__":
-    run(nums)
+    TARGET = 19690720
+    nums = []
+    with open("./day2p1input") as f:
+        for line in f:
+            nums = [int(num) for num in line.split(",")]
+
+    get_result(nums)
