@@ -43,7 +43,7 @@ def run_tests(nums, idx, paramodes, opcode):
 
 if __name__ == "__main__":
     nums = []
-    with open("./day5p1input") as f:
+    with open("./day5input") as f:
         for line in f:
             nums = [int(num) for num in line.split(",")]
 

@@ -20,7 +20,7 @@ def calc():
 
 if __name__ == "__main__":
     nums = []
-    with open("./day2p1input") as f:
+    with open("./day2input") as f:
         for line in f:
             nums = [int(num) for num in line.split(",")]
     preprocess()

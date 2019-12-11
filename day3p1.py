@@ -1,9 +1,5 @@
-# FILENAME = "./day3p1input"
-FILENAME = "./fakeinput"
-
-
 def convert_to_list():
-    with open(FILENAME) as f:
+    with open("./day3input") as f:
         line = f.readline()
         firstline = [(step[0], int(step[1:])) for step in line.split(",")]
         line = f.readline()
@@ -92,7 +88,6 @@ def min_dist(row, col):
     dist = 2 ** 31 - 1
     for x, y in interx:
         curr = abs(x - row) + abs(y - col)
-        print("curr = " + str(curr))
         if curr < dist:
             dist = curr
 
@@ -107,6 +102,4 @@ if __name__ == "__main__":
 
     draw_line(first, max_row, max_col, False)
     draw_line(second, max_row, max_col, True)
-    print("YOYOYOYOYOYOYOYOYO")
-    print(interx)
     print(min_dist(max_row, max_col))

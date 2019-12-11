@@ -1,9 +1,5 @@
-# FILENAME = "./day3p1input"
-FILENAME = "./fakeinput"
-
-
 def convert_to_list():
-    with open(FILENAME) as f:
+    with open("./day3input") as f:
         line = f.readline()
         firstline = [(step[0], int(step[1:])) for step in line.split(",")]
         line = f.readline()
@@ -137,11 +133,6 @@ if __name__ == "__main__":
     grid = [[0 for _ in range(2 * max_col + 2)]
             for _ in range(2 * max_row + 2)]
 
-    print("start first")
     draw_line(first, max_row, max_col, False)
-    print("start second")
     draw_line(second, max_row, max_col, True)
-    print("YOYO")
-    print(interx)
-    print("HIHI")
     print(fewest_steps())
