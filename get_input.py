@@ -9,7 +9,7 @@ with open("session_secret", "r") as f:
 cookies = {"session": session_id}
 
 r = requests.get(url, cookies=cookies)
-file_name = "day" + sys.argv[1] + "input"
+file_name = "./input/day" + sys.argv[1] + "input"
 
 with open(file_name, "wb") as f:
     f.write(r.content)

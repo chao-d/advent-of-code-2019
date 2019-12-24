@@ -15,7 +15,7 @@ def calc(nums, base, ip, ipt, output, extension_map):
 
         run_tests(nums, ip, paramodes, opcode, base,
                   ipt, output, extension_map)
-        if len(output) == 2:
+        if len(output) == 3:
             return
 
 
@@ -55,7 +55,8 @@ def run_tests(nums, ip, paramodes, opcode, base, ipt, output, extension_map):
             else:
                 base[0] += nums[ip[0] + 1]
         elif opcode == 3:
-            write_to_pos(nums, pos, extension_map, ipt)
+            val = ipt()
+            write_to_pos(nums, pos, extension_map, val)
         else:
             if len(paramodes) < 1 or paramodes[0] != 1:
                 val = get_pos_val(nums, pos, extension_map)
@@ -106,87 +107,54 @@ def run_tests(nums, ip, paramodes, opcode, base, ipt, output, extension_map):
 
 def run(nums):
     base = [0]
-    ip = [0]
-    ipt = 1
+    ip = [2]
 
-    matrix = [["." for _ in range(1000)] for _ in range(1000)]
-    curr = [500, 500]
-    direction = ["UP"]
+    matrix = [[0 for _ in range(30)] for _ in range(50)]
     extension_map = dict()
+    ball_x = -1
+    paddle_x = -1
 
-    count = 0
-    visited = set()
+    def ipt():
+        if ball_x > paddle_x:
+            return 1
+        elif ball_x < paddle_x:
+            return -1
+        else:
+            return 0
 
     while True:
         output = []
-        if matrix[curr[0]][curr[1]] == ".":
-            ipt = 0
-        else:
-            ipt = 1
         calc(nums, base, ip, ipt, output, extension_map)
-        if len(output) < 2:
+        if len(output) < 3:
             break
+        x, y, tile_id = output[0], output[1], output[2]
+        if x == -1 and y == 0:
+            print("SCORE = " + str(tile_id))
+            continue
+        curr = matrix[x][y]
 
-        if output[0] == 0:
-            matrix[curr[0]][curr[1]] = "."
+        if tile_id == 3:
+            paddle_x = x
+        if tile_id == 4:
+            ball_x = x
+
+        if curr == 0:
+            matrix[x][y] = tile_id
         else:
-            matrix[curr[0]][curr[1]] = "#"
-
-        get_dir(curr, direction, output[1])
-
-        if (curr[0], curr[1]) not in visited:
-            visited.add((curr[0], curr[1]))
-            count += 1
-        print("COUNT = " + str(count))
-
-    return count
+            if curr == 2 and tile_id == 4:
+                matrix[x][y] = 0
 
 
 def pretty_print(matrix):
-    for i in range(len(matrix[0])):
-        for j in range(len(matrix)):
-            if matrix[i][j] == "#":
-                print("@", end="")
-            else:
-                print(" ", end="")
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            print(str(matrix[i][j]), end="")
         print()
-
-
-def get_dir(curr, direction, ipt):
-    if direction[0] == "UP":
-        if ipt == 0:
-            direction[0] = "LEFT"
-            curr[1] -= 1
-        else:
-            direction[0] = "RIGHT"
-            curr[1] += 1
-    elif direction[0] == "DOWN":
-        if ipt == 1:
-            direction[0] = "LEFT"
-            curr[1] -= 1
-        else:
-            direction[0] = "RIGHT"
-            curr[1] += 1
-    elif direction[0] == "LEFT":
-        if ipt == 0:
-            direction[0] = "DOWN"
-            curr[0] += 1
-        else:
-            direction[0] = "UP"
-            curr[0] -= 1
-    else:
-        if ipt == 0:
-            direction[0] = "UP"
-            curr[0] -= 1
-        else:
-            direction[0] = "DOWN"
-            curr[0] += 1
 
 
 if __name__ == "__main__":
     nums = []
-    with open("./day11input") as f:
+    with open("../input/day13input") as f:
         for line in f:
             nums = [int(num) for num in line.split(",")]
-    # expand_nums(nums, 10000)
     run(nums)

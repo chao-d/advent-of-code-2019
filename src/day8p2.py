@@ -31,7 +31,7 @@ def decode_pixel(first, sec):
 
 
 if __name__ == "__main__":
-    with open("./day8input") as f:
+    with open("../input/day8input") as f:
         for line in f:
             nums = [int(num) for num in str(line).rstrip()]
     decode_image(nums)

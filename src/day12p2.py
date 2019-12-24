@@ -85,7 +85,7 @@ def lcm(steps):
 
 if __name__ == "__main__":
     pos = []
-    with open("day12input") as f:
+    with open("../input/day12input") as f:
         for line in f:
             line = re.split('=|, ', line.rstrip()[1:-1])
             pos.append([int(line[i]) for i in range(len(line)) if i % 2 == 1])

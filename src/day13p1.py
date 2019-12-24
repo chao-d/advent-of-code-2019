@@ -127,7 +127,7 @@ def run(nums):
 
 if __name__ == "__main__":
     nums = []
-    with open("./day13input") as f:
+    with open("../input/day13input") as f:
         for line in f:
             nums = [int(num) for num in line.split(",")]
 

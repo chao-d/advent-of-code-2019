@@ -27,7 +27,7 @@ def get_sum(values):
 
 if __name__ == "__main__":
     objs_map = dict()
-    with open("./day6input") as f:
+    with open("../input/day6input") as f:
         for line in f:
             key_val = line.rstrip().split(")")
             if key_val[0] not in objs_map:

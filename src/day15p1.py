@@ -15,7 +15,7 @@ def calc(nums, base, ip, ipt, output, extension_map):
 
         run_tests(nums, ip, paramodes, opcode, base,
                   ipt, output, extension_map)
-        if len(output) == 2:
+        if len(output) != 0:
             return
 
 
@@ -105,81 +105,67 @@ def run_tests(nums, ip, paramodes, opcode, base, ipt, output, extension_map):
 
 
 def run(nums):
-    base = [0]
-    ip = [0]
-    ipt = 1
-
-    matrix = [["." for _ in range(100)] for _ in range(100)]
-    curr = [50, 50]
-    matrix[curr[0]][curr[1]] = "#"
-    direction = ["UP"]
+    matrix = [["." for _ in range(50)] for _ in range(50)]
+    visited = [[False for _ in range(50)] for _ in range(50)]
+    curr = [25, 25]
+    matrix[curr[0]][curr[1]] = "D"
     extension_map = dict()
+    ip, base = [0], [0]
+    result = dfs(matrix, visited, curr, ip, base, extension_map)
+    if result:
+        print("YOYOYOYOYOYOYO", result)
 
-    while True:
-        output = []
-        if matrix[curr[0]][curr[1]] == ".":
-            ipt = 0
-        else:
-            ipt = 1
-        calc(nums, base, ip, ipt, output, extension_map)
-        if len(output) < 2:
-            break
 
-        if output[0] == 0:
-            matrix[curr[0]][curr[1]] = "."
-        else:
-            matrix[curr[0]][curr[1]] = "#"
-
-        get_dir(curr, direction, output[1])
-
+def dfs(matrix, visited, curr, ip, base, extension_map):
     pretty_print(matrix)
+    print()
+    if curr[0] < 0 or curr[0] >= len(matrix) or \
+       curr[1] < 0 or curr[1] >= len(matrix[0]) or \
+       visited[curr[0]][curr[1]] or matrix[curr[0]][curr[1]] == "#":
+        return
+    visited[curr[0]][curr[1]] = True
+    count = 0
+    for d in range(4):
+        output = []
+        calc(nums, base, ip, d + 1, output, extension_map)
+        if not output:
+            print("WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
+            continue
+        x, y = dirs[d]
+        if output[0] == 0:
+            matrix[curr[0] + x][curr[1] + y] = "#"
+            count += 1
+        else:
+            matrix[curr[0]][curr[1]] = "."
+            curr[0] += x
+            curr[1] += y
+            matrix[curr[0]][curr[1]] = "D"
+            if output[0] == 2:
+                return curr
+            dfs(matrix, visited, curr, ip, base, extension_map)
+
+
+# def aux_in_out(ipt, output, curr, matrix):
+    # if output[0] == 0:
+    #     matrix[curr[0] + x][curr[1] + y] = "#"
+    # else:
+    #     matrix[curr[0]][curr[1]] = "."
+    #     curr[0] += x
+    #     curr[1] += y
+    #     matrix[curr[0]][curr[1]] = "D"
 
 
 def pretty_print(matrix):
-    for i in range(len(matrix[0])):
-        for j in range(len(matrix)):
-            if matrix[i][j] == "#":
-                print("@", end="")
-            else:
-                print(" ", end="")
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            print(matrix[i][j], end="")
         print()
 
 
-def get_dir(curr, direction, ipt):
-    if direction[0] == "UP":
-        if ipt == 0:
-            direction[0] = "LEFT"
-            curr[1] -= 1
-        else:
-            direction[0] = "RIGHT"
-            curr[1] += 1
-    elif direction[0] == "DOWN":
-        if ipt == 1:
-            direction[0] = "LEFT"
-            curr[1] -= 1
-        else:
-            direction[0] = "RIGHT"
-            curr[1] += 1
-    elif direction[0] == "LEFT":
-        if ipt == 0:
-            direction[0] = "DOWN"
-            curr[0] += 1
-        else:
-            direction[0] = "UP"
-            curr[0] -= 1
-    else:
-        if ipt == 0:
-            direction[0] = "UP"
-            curr[0] -= 1
-        else:
-            direction[0] = "DOWN"
-            curr[0] += 1
-
-
 if __name__ == "__main__":
+    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     nums = []
-    with open("./day11input") as f:
+    with open("../input/day15input") as f:
         for line in f:
             nums = [int(num) for num in line.split(",")]
-    # expand_nums(nums, 10000)
     run(nums)

@@ -78,7 +78,7 @@ def gen_perm(nums):
 
 if __name__ == "__main__":
     nums = []
-    with open("./day7input") as f:
+    with open("../input/day7input") as f:
         for line in f:
             nums = [int(num) for num in line.split(",")]
 

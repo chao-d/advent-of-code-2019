@@ -90,7 +90,7 @@ def run_tests(nums, idx, paramodes, opcode, base):
 
 if __name__ == "__main__":
     nums = []
-    with open("./day9input") as f:
+    with open("../input/day9input") as f:
         for line in f:
             nums = [int(num) for num in line.split(",")]
     calc(nums)

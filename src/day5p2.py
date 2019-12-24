@@ -1,13 +1,8 @@
-from itertools import permutations
+INPUT = 5
 
 
-PHASES = [0, 1, 2, 3, 4]
-
-
-def calc(inputs, nums):
+def calc(nums):
     idx = 0
-    val = 0
-    input_idx = 0
     while idx < len(nums):
         num = str(nums[idx])
         paramodes = []
@@ -22,24 +17,18 @@ def calc(inputs, nums):
             for i in range(-3, -len(num) - 1, -1):
                 paramodes.append(int(num[i]))
 
-        idx, val = run_tests(inputs[input_idx], nums, idx, paramodes, opcode)
-        if opcode == 4:
-            return val
-        if opcode == 3:
-            input_idx += 1
-            input_idx = min(input_idx, 1)
+        idx = run_tests(nums, idx, paramodes, opcode)
 
 
-def run_tests(input_val, nums, idx, paramodes, opcode):
-    output = -2 ** 31
+def run_tests(nums, idx, paramodes, opcode):
     if opcode == 3 or opcode == 4:
         if opcode == 3:
-            nums[nums[idx + 1]] = input_val
+            nums[nums[idx + 1]] = INPUT
         else:
             val = nums[nums[idx + 1]] \
                 if len(paramodes) < 1 or paramodes[0] == 0 else nums[idx + 1]
-            output = val
-        return idx + 2, output
+            print(val)
+        return idx + 2
     else:
         first_num = nums[nums[idx + 1]] \
             if len(paramodes) < 1 or paramodes[0] == 0 else nums[idx + 1]
@@ -50,36 +39,24 @@ def run_tests(input_val, nums, idx, paramodes, opcode):
                 nums[nums[idx + 3]] = first_num + sec_num
             else:
                 nums[nums[idx + 3]] = first_num * sec_num
-            return idx + 4, output
+            return idx + 4
         elif opcode < 7:
             if opcode == 5:
-                return idx + 3 if first_num == 0 else sec_num, output
+                return idx + 3 if first_num == 0 else sec_num
             else:
-                return idx + 3 if first_num != 0 else sec_num, output
+                return idx + 3 if first_num != 0 else sec_num
         else:
             if opcode == 7:
                 nums[nums[idx + 3]] = 1 if first_num < sec_num else 0
             else:
                 nums[nums[idx + 3]] = 1 if first_num == sec_num else 0
-            return idx + 4, output
-
-
-def gen_perm(nums):
-    return [perm for perm in permutations(nums, len(nums))]
+            return idx + 4
 
 
 if __name__ == "__main__":
     nums = []
-    with open("./day7input") as f:
+    with open("../input/day5input") as f:
         for line in f:
             nums = [int(num) for num in line.split(",")]
 
-    max_val = -2 ** 63
-    perms = gen_perm(PHASES)
-    for perm in perms:
-        val = 0
-        for i in range(len(perm)):
-            val = calc([perm[i], val], nums)
-        max_val = max(max_val, val)
-
-    print(max_val)
+    calc(nums)

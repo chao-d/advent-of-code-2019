@@ -1,5 +1,5 @@
 def convert_to_list():
-    with open("./day3input") as f:
+    with open("../input/day3input") as f:
         line = f.readline()
         firstline = [(step[0], int(step[1:])) for step in line.split(",")]
         line = f.readline()

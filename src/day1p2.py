@@ -11,7 +11,7 @@ def calc_fuel(num):
 
 if __name__ == "__main__":
     nums = []
-    with open("day1input") as f:
+    with open("../input/day1input") as f:
         for line in f:
             num = int(line.rstrip())
             nums.append(num)

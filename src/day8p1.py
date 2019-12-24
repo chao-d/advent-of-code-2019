@@ -22,7 +22,7 @@ def get_fewest(nums):
 
 
 if __name__ == "__main__":
-    with open("./day8input") as f:
+    with open("../input/day8input") as f:
         for line in f:
             nums = str(line).rstrip()
     num1, num2 = get_fewest(nums)

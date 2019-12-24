@@ -133,7 +133,7 @@ def clockwise_helper(locs, loc_set, res, slopes):
 
 if __name__ == "__main__":
     matrix = []
-    with open("./day10input") as f:
+    with open("../input/day10input") as f:
         for line in f:
             matrix.append([pos for pos in str(line).rstrip()])
 

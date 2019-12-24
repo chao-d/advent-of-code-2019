@@ -1,20 +1,9 @@
-TARGET = 19690720
+def preprocess():
+    nums[1] = 12
+    nums[2] = 2
 
 
-def get_result(nums):
-    curr = nums[:]
-    for i in range(100):
-        for j in range(100):
-            nums = curr[:]
-            nums[1], nums[2] = i, j
-            print(calc(nums))
-            if calc(nums) == TARGET:
-                print(i, j)
-                print("result = " + str(100 * i + j))
-                return
-
-
-def calc(nums):
+def calc():
     length = len(nums)
     for i in range(0, length, 4):
         if nums[i] == 99 or (nums[i] != 1 and nums[i] != 2):
@@ -31,8 +20,8 @@ def calc(nums):
 
 if __name__ == "__main__":
     nums = []
-    with open("./day2input") as f:
+    with open("../input/day2input") as f:
         for line in f:
             nums = [int(num) for num in line.split(",")]
-
-    get_result(nums)
+    preprocess()
+    print(calc())
